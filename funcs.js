@@ -51,8 +51,8 @@ function startGame() {
 
 }
 
-function not_filled_row(i, matrix) {
-    matrix[i].some(elem => {return elem == false});
+function notFilledRow(i, matrix) {
+    return matrix[i].some(elem => {return elem == false});
 }
 
 function play() {
@@ -65,7 +65,7 @@ function play() {
     initListener(matrix);
     for (let i = 0; i < 6; i++) {
         var j = 0;
-        while (not_filled_row(i, matrix)) {
+        while (notFilledRow(i, matrix)) {
             
         }
     }
