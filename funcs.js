@@ -22,8 +22,6 @@ function drawResult(index = -1) {
 
     skeleton = document.createElement("div");
     skeleton.setAttribute("id", "res");
-
-
     document.body.appendChild(skeleton);
 }
 
@@ -59,7 +57,8 @@ var playerToNum = {
     "marin.png" : 4,
     "ivanic.png" : 5
 };
-
+var resultShown = Array(numOfFields).fill(false);
+var gameIsOver = false;
 
 function solveRedYellow(tmp_result) {
     var red_fields = 0;
@@ -83,8 +82,10 @@ function solveRedYellow(tmp_result) {
 }
 
 
-function showResult(colors) {
-    
+function showResult(colors, index) {
+
+    if (resultShown[index])
+        return;
     row = document.createElement("div");
     row.setAttribute("class", "color-row");
     
@@ -100,7 +101,7 @@ function showResult(colors) {
     skeleton.appendChild(row);
 }
 
-function generateColors(result) {
+function generateColors(result, index) {
     var colPic = [];
     for (let i = 0; i < result[0]; i++) {
         var element = document.createElement("img");
@@ -121,7 +122,7 @@ function generateColors(result) {
         colPic.push(element);
     }
 
-    showResult(colPic);
+    showResult(colPic, index);
     colPic.forEach((e) => {
         e.setAttribute("class", "boje");
     });
@@ -130,7 +131,7 @@ function generateColors(result) {
 
 function checkResult(index) {
     var row = document.querySelector("#row" + index);
-    var input = []
+    var input = [];
     var divs = row.childNodes;
     for (const div of divs) {
         if (div.nodeName !== "BUTTON") {
@@ -141,8 +142,13 @@ function checkResult(index) {
     }
     
     var result = solveRedYellow(input);
-    generateColors(result);
-    
+    console.log(result);
+    generateColors(result, index);
+    resultShown[index] = true;
+    if (JSON.stringify(result) == JSON.stringify([4, 0])) {
+        window.alert("HAHAHAHAHAH");
+        gameIsOver = true;
+    }
 }
 
 function confirmRow(confirmedRows, index) {
@@ -162,12 +168,34 @@ function generateButton(index, confirmedRows) {
     document.getElementById("row" + index).appendChild(button);
 }
 
+
+function setUndo(matrix) {
+    undoButton = document.createElement("button");
+    undoButton.innerHTML = "UNDO";
+    undoButton.setAttribute("id", "undoBtn");
+    undoButton.addEventListener("click", function () {
+        var empty = findFirstFalse(matrix);
+        if (empty[1] === 0)
+            return;
+
+        empty[1]--;
+        var idToDelete = 4 * empty[0] + empty[1];
+        matrix[empty[0]][empty[1]] = false;
+        var fieldToDelete = document.getElementById("x" + idToDelete);
+        fieldToDelete.removeChild(fieldToDelete.firstElementChild);
+    });
+
+    document.getElementById("slike").appendChild(undoButton);
+}
+
 function initListener(matrix) {
     var confirmedRows = Array(numOfFields).fill(false);
     var finishedRows = Array(numOfFields).fill(false);
     var pics = document.getElementsByTagName("img");
-    for (var index = 0; index < pics.length; index++) 
+    for (var index = 0; index < pics.length; index++)
            pics[index].addEventListener("click", function () {
+               if (gameIsOver)
+                   return;
                var player = this.getAttribute("src");
                var emptyFields = findFirstFalse(matrix);
                if (previousRowConfirmed(emptyFields[0], confirmedRows)) {
@@ -183,6 +211,8 @@ function initListener(matrix) {
                 }
            },
         false)
+
+    setUndo(matrix);
 }
 
 
