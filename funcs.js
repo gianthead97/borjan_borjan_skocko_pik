@@ -20,7 +20,7 @@ function drawTable() {
 
 function drawResult(index = -1) {
 
-    var skeleton = document.createElement("div");
+    skeleton = document.createElement("div");
     skeleton.setAttribute("id", "res");
 
 
@@ -47,10 +47,10 @@ function previousRowConfirmed(row_indicator, confirmedRows) {
         return confirmedRows[row_indicator-1];
 }
 
-
+var skeleton;
 var numOfFields = 6;
 var colors = ["red.png", "yellow.png", "black.png"];
-var solution = [1, 0, 5, 3];
+var solution = [Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6)]
 var playerToNum = {
     "pavkov.png" : 0,
     "boakye.png" : 1,
@@ -83,6 +83,24 @@ function solveRedYellow(tmp_result) {
 }
 
 
+function showResult(colors) {
+    
+    row = document.createElement("div");
+    row.setAttribute("class", "color-row");
+    
+    for (let i = 0; i < colors.length; i++) {
+        var field = document.createElement("div");
+        field.setAttribute("class", "color-field");
+        row.appendChild(field);
+        var image = document.createElement("img");
+        image.setAttribute("src", colors[i].getAttribute("src"));
+        image.setAttribute("class", "boje");
+        image.se
+        field.appendChild(image);
+    }
+    skeleton.appendChild(row);
+}
+
 function generateColors(result) {
     var colPic = [];
     for (let i = 0; i < result[0]; i++) {
@@ -104,9 +122,8 @@ function generateColors(result) {
         colPic.push(element);
     }
 
-    console.log(colPic);
+    showResult(colPic);
     colPic.forEach((e) => {
-        document.body.appendChild(e);
         e.setAttribute("class", "boje");
     });
 
@@ -180,5 +197,5 @@ function play() {
 }
 
 drawTable();
-
+drawResult();
 play();

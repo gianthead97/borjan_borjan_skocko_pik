@@ -7,14 +7,16 @@
 		
         <style>
             .div-table {
+                position: fixed;
                 display: table;
-                
+                width: auto;
                 height: 300px;
                 border: 1px solid;
                 border-spacing: 1px;
-				align-content:	;: center;
+				align-content: center;
                 margin: auto;
                 background-color: crimson;
+                left: 350px;
             }
             .div-table-row {
                 display: table-row;
@@ -24,15 +26,33 @@
                 border: 10px solid;
             }
             
+            .color-row {
+                display: table-row;
+                height: 90px;
+                width: 500px;
+                border: 1px solid;
+                clear: both;
+                position: relative;
+            }
+            
             .div-table-col {
                 float: left;
-                display: table-column;
                 width: 120px;
                 height: 90px;
                 display: block;	
                 margin: 2px;
                 background-color: white;
                 
+            }
+            
+            
+            .color-field {
+                float: left;
+                display: block;
+                height: 50px;
+                width: 125px;
+                margin: auto;
+                position: relative;
             }
             #slike {
                 position: fixed;
@@ -63,7 +83,19 @@
 				height: 50px;
 				border-radius: 50%;
 				margin: auto;
+                top: 30px;
+                position: inherit;
 			}
+            
+            #res {
+                float: right;
+                width: 500px;
+                height: 576px;
+                position: fixed;
+                top: 10px;
+                right: 20px;
+                /*border: 1px solid;*/
+            }
            
         </style>
     </head>
