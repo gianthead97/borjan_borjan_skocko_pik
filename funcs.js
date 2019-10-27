@@ -3,13 +3,13 @@ function drawTable() {
 
     var table = document.createElement("div");
     table.setAttribute("class", "div-table");
-    for (let i = 0; i < numOfFields; i++) {
+    for (i = 0; i < numOfFields; i++) {
         var row = document.createElement("div");
         row.setAttribute("class", "div-table-row");
         row.setAttribute("id", "row" + i);
         var row_content = "";
 
-        for (let j = 0; j < 4; j++)  {
+        for (j = 0; j < 4; j++)  {
             row_content = row_content + ("<div id = x" + String(i*4 + j)  + " class = div-table-col>" + "</div>");
         }
         row.innerHTML = row_content;
@@ -95,7 +95,6 @@ function showResult(colors) {
         var image = document.createElement("img");
         image.setAttribute("src", colors[i].getAttribute("src"));
         image.setAttribute("class", "boje");
-        image.se
         field.appendChild(image);
     }
     skeleton.appendChild(row);
