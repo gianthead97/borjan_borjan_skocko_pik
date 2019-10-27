@@ -40,7 +40,7 @@ function previousRowConfirmed(row_indicator, confirmedRows) {
 
 
 var numOfFields = 6;
-var colors = ["red.jpg", "yellow.png", "black.png"];
+var colors = ["red.png", "yellow.png", "black.png"];
 var solution = [1, 0, 5, 3];
 var playerToNum = {
     "pavkov.png" : 0,
@@ -77,19 +77,30 @@ function solveRedYellow(tmp_result) {
 function generateColors(result) {
     var colPic = [];
     for (let i = 0; i < result[0]; i++) {
-        colPic.push(document.createElement("img").setAttribute("src", colors[0]));
+        var element = document.createElement("img");
+        element.setAttribute("src", colors[0]);
+        colPic.push(element)
     }
 
     for (let i = 0; i < result[1]; i++) {
-        colPic.push(document.createElement("img").setAttribute("src", colors[1]));
+        var element = document.createElement("img");
+        element.setAttribute("src", colors[1]);
+        colPic.push(element);
     }
 
 
     for (let i = 0; i < 4 - result[0] - result[1]; i++) {
-        colPic.push(document.createElement("img").setAttribute("src", colors[2]));
+        var element = document.createElement("img");
+        element.setAttribute("src", colors[2]);
+        colPic.push(element);
     }
 
     console.log(colPic);
+    colPic.forEach((e) => {
+        document.body.appendChild(e);
+        e.setAttribute("class", "boje");
+    });
+
 }
 
 function checkResult(index) {
