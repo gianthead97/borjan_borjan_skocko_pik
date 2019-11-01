@@ -45,6 +45,10 @@ function previousRowConfirmed(row_indicator, confirmedRows) {
         return confirmedRows[row_indicator-1];
 }
 
+
+
+var matrix;
+var buttonGenerated = Array(6).fill(false);
 var skeleton;
 var numOfFields = 6;
 var colors = ["red.png", "yellow.png", "black.png"];
@@ -142,43 +146,51 @@ function checkResult(index) {
     }
     
     var result = solveRedYellow(input);
-    console.log(result);
     generateColors(result, index);
     resultShown[index] = true;
     if (JSON.stringify(result) == JSON.stringify([4, 0])) {
-        window.alert("HAHAHAHAHAH");
+        window.alert("SVAKA ČAST!!!");
         gameIsOver = true;
     }
 }
 
 function confirmRow(confirmedRows, index) {
-    id = parseInt(this.getAttribute("id"));
-    confirmedRows[index] = true;
+    if (!not_filled_row(index, matrix)) {
+        console.log(index);
+        console.log(matrix);
+        id = parseInt(this.getAttribute("id"));
+        confirmedRows[index] = true;
 
-    checkResult(index);
-    
+        checkResult(index);
+    }    
 }
 
 function generateButton(index, confirmedRows) {
+    if (buttonGenerated[index])
+        return;
     var button = document.createElement("button");
     button.setAttribute("id", String(index));
     button.innerHTML = "POTVRDI";
     button.addEventListener("click", confirmRow.bind(button, confirmedRows, index));
-
+    buttonGenerated[index] = true;
     document.getElementById("row" + index).appendChild(button);
 }
-
-
-function setUndo(matrix) {
+function setUndo(matrix, confirmedRows) { 
     undoButton = document.createElement("button");
     undoButton.innerHTML = "UNDO";
     undoButton.setAttribute("id", "undoBtn");
     undoButton.addEventListener("click", function () {
         var empty = findFirstFalse(matrix);
-        if (empty[1] === 0)
+        if (empty[1] === 0 && empty[0] > 0 && confirmedRows[empty[0]-1])
+            return;
+        if (empty[0] === 0 && empty[1] === 0)
             return;
 
-        empty[1]--;
+        if (empty[1] === 0) {
+            empty[0]--;
+            empty[1] = 3
+        }
+        else empty[1]--;
         var idToDelete = 4 * empty[0] + empty[1];
         matrix[empty[0]][empty[1]] = false;
         var fieldToDelete = document.getElementById("x" + idToDelete);
@@ -186,6 +198,10 @@ function setUndo(matrix) {
     });
 
     document.getElementById("slike").appendChild(undoButton);
+}
+
+function not_filled_row(i, matrix) {
+    return matrix[i].some(elem => {return elem == false});
 }
 
 function initListener(matrix) {
@@ -212,12 +228,12 @@ function initListener(matrix) {
            },
         false)
 
-    setUndo(matrix);
+    setUndo(matrix, confirmedRows);
 }
 
 
 function play() {
-    var matrix = Array(numOfFields);
+    matrix = Array(numOfFields);
     for (let i = 0; i < matrix.length; i++)
         matrix[i] = Array(4).fill(false);
 
