@@ -1,4 +1,23 @@
 
+var matrix;
+var buttonGenerated = Array(6).fill(false);
+var skeleton;
+var numOfFields = 6;
+var colors = ["red.png", "yellow.png", "black.png"];
+var solution = [Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6)]
+var playerToNum = {
+    "pavkov.png" : 0,
+    "boakye.png" : 1,
+    "borjan.png" : 2,
+    "degenek.png" : 3,
+    "marin.png" : 4,
+    "ivanic.png" : 5
+};
+var resultShown = Array(numOfFields).fill(false);
+var gameStart = false;
+var gameIsOver = false;
+
+
 function drawTable() {
 
     var table = document.createElement("div");
@@ -47,22 +66,6 @@ function previousRowConfirmed(row_indicator, confirmedRows) {
 
 
 
-var matrix;
-var buttonGenerated = Array(6).fill(false);
-var skeleton;
-var numOfFields = 6;
-var colors = ["red.png", "yellow.png", "black.png"];
-var solution = [Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6)]
-var playerToNum = {
-    "pavkov.png" : 0,
-    "boakye.png" : 1,
-    "borjan.png" : 2,
-    "degenek.png" : 3,
-    "marin.png" : 4,
-    "ivanic.png" : 5
-};
-var resultShown = Array(numOfFields).fill(false);
-var gameIsOver = false;
 
 function solveRedYellow(tmp_result) {
     var red_fields = 0;
@@ -149,15 +152,17 @@ function checkResult(index) {
     generateColors(result, index);
     resultShown[index] = true;
     if (JSON.stringify(result) == JSON.stringify([4, 0])) {
-        window.alert("SVAKA ČAST!!!");
+        var time = document.getElementById("bar").getAttribute("style").match(/\d+/)[0];
+        var solution = findFirstFalse(matrix);
+        var result = (solution[0] - 1) / -5 * 50 + 60 + time / 2;
+        window.alert("BRAVO!!! TVOJ REZULTAT JE: " + result);
         gameIsOver = true;
+        sendResult(result);
     }
 }
 
 function confirmRow(confirmedRows, index) {
     if (!not_filled_row(index, matrix)) {
-        console.log(index);
-        console.log(matrix);
         id = parseInt(this.getAttribute("id"));
         confirmedRows[index] = true;
 
@@ -181,6 +186,7 @@ function setUndo(matrix, confirmedRows) {
     undoButton.setAttribute("id", "undoBtn");
     undoButton.addEventListener("click", function () {
         var empty = findFirstFalse(matrix);
+        console.log(empty);
         if (empty[1] === 0 && empty[0] > 0 && confirmedRows[empty[0]-1])
             return;
         if (empty[0] === 0 && empty[1] === 0)
@@ -188,7 +194,9 @@ function setUndo(matrix, confirmedRows) {
 
         if (empty[1] === 0) {
             empty[0]--;
-            empty[1] = 3
+            empty[1] = 3;
+        } else if (JSON.stringify(empty) == JSON.stringify([-1, -1])) {
+            empty = [5, 3];
         }
         else empty[1]--;
         var idToDelete = 4 * empty[0] + empty[1];
@@ -212,6 +220,8 @@ function initListener(matrix) {
            pics[index].addEventListener("click", function () {
                if (gameIsOver)
                    return;
+               if (!gameStart)
+                   return;
                var player = this.getAttribute("src");
                var emptyFields = findFirstFalse(matrix);
                if (previousRowConfirmed(emptyFields[0], confirmedRows)) {
@@ -228,7 +238,41 @@ function initListener(matrix) {
            },
         false)
 
+
+    setStart();    
     setUndo(matrix, confirmedRows);
+}
+
+function setStart() {
+    var startButton = document.createElement("button");
+    startButton.setAttribute("id", "startButton");
+    startButton.innerHTML = "START";
+    document.body.appendChild(startButton);
+    startButton.onclick = function() {
+        gameStart = true;
+    }
+}
+
+function makeProgressBar() {
+    var myProgress = document.createElement("div");
+    var myBar = document.createElement("div");
+    myProgress.setAttribute("id", "progress");
+    myBar.setAttribute("id", "bar");
+    document.body.appendChild(myProgress);
+    myProgress.appendChild(myBar);
+    
+    (function(){
+        var width = 0;
+        var interval = setInterval(function() {
+            if (width >= 100) {
+                clearInterval(interval);
+                gameIsOver = true; 
+                window.alert("NA ZALOST. TERZA SE UOPSTE SE NE PONOSI TOBOM.")          
+            } else if (!gameIsOver && gameStart){
+                myBar.style.width = width++ + "%";
+            }
+        }, 500)
+    })();
 }
 
 
@@ -237,9 +281,19 @@ function play() {
     for (let i = 0; i < matrix.length; i++)
         matrix[i] = Array(4).fill(false);
 
-
+    makeProgressBar();
     initListener(matrix);
 }
+
+
+// -------------------------------- ZA DRUGI DEO -------------------------------------
+function sendResult(result) {
+    //TODO
+}
+
+
+
+
 
 drawTable();
 drawResult();
