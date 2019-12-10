@@ -3,15 +3,15 @@ var matrix;
 var buttonGenerated = Array(6).fill(false);
 var skeleton;
 var numOfFields = 6;
-var colors = ["red.png", "yellow.png", "black.png"];
+var colors = ["imgs/red.png", "imgs/yellow.png", "imgs/black.png"];
 var solution = [Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6), Math.floor(Math.random() * 6)]
 var playerToNum = {
-    "pavkov.png" : 0,
-    "boakye.png" : 1,
-    "borjan.png" : 2,
-    "degenek.png" : 3,
-    "marin.png" : 4,
-    "ivanic.png" : 5
+    "imgs/pavkov.png" : 0,
+    "imgs/boakye.png" : 1,
+    "imgs/borjan.png" : 2,
+    "imgs/degenek.png" : 3,
+    "imgs/marin.png" : 4,
+    "imgs/ivanic.png" : 5
 };
 var resultShown = Array(numOfFields).fill(false);
 var gameStart = false;
