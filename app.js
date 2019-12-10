@@ -19,7 +19,6 @@ var gameIsOver = false;
 
 
 function drawTable() {
-
     var table = document.createElement("div");
     table.setAttribute("class", "div-table");
     for (i = 0; i < numOfFields; i++) {
@@ -180,6 +179,7 @@ function generateButton(index, confirmedRows) {
     buttonGenerated[index] = true;
     document.getElementById("row" + index).appendChild(button);
 }
+
 function setUndo(matrix, confirmedRows) { 
     undoButton = document.createElement("button");
     undoButton.innerHTML = "UNDO";
@@ -287,14 +287,25 @@ function play() {
 
 
 // -------------------------------- ZA DRUGI DEO -------------------------------------
-function sendResult(result) {
-    //TODO
+async function sendResult(result) {
+    try { 
+        const URL = 'http://localhost:3000/' + result;
+        const response = await fetch(URL, {
+            method : 'get',
+        });
+        
+        //const jsonResponse = await response.json();
+        //console.log(jsonResponse);
+        
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
 
 
-
+sendResult(1);
 drawTable();
 drawResult();
 play();

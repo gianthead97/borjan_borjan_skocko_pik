@@ -1,0 +1,24 @@
+{
+  "name": "mini_game",
+  "version": "1.0.0",
+  "description": "Mini-game in native JS implemented during a course in organisation of Levi9",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianthead97/borjan_borjan_skocko_pik.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gianthead97/borjan_borjan_skocko_pik/issues"
+  },
+  "homepage": "https://github.com/gianthead97/borjan_borjan_skocko_pik#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.3.5"
+  }
+}
