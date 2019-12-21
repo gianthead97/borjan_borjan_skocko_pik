@@ -289,13 +289,21 @@ function play() {
 // -------------------------------- ZA DRUGI DEO -------------------------------------
 async function sendResult(result) {
     try { 
-        const URL = 'http://localhost:3000/' + result;
+        const URL = 'http://localhost:3000/';
         const response = await fetch(URL, {
-            method : 'get',
+            method : 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+            
+            },
+            mode : 'cors',
+            body : JSON.stringify({
+                pts : result
+            })
         });
         
         //const jsonResponse = await response.json();
-        //console.log(jsonResponse);
+        console.log(response);
         
     } catch (err) {
         console.error(err);
@@ -305,7 +313,6 @@ async function sendResult(result) {
 
 
 
-sendResult(1);
 drawTable();
 drawResult();
 play();
