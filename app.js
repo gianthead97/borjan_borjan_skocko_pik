@@ -17,7 +17,6 @@ var resultShown = Array(numOfFields).fill(false);
 var gameStart = false;
 var gameIsOver = false;
 
-
 function drawTable() {
     var table = document.createElement("div");
     table.setAttribute("class", "div-table");
@@ -135,7 +134,7 @@ function generateColors(result, index) {
 
 }
 
-function checkResult(index) {
+async function checkResult(index) {
     var row = document.querySelector("#row" + index);
     var input = [];
     var divs = row.childNodes;
@@ -156,7 +155,8 @@ function checkResult(index) {
         var result = (solution[0] - 1) / -5 * 50 + 60 + time / 2;
         window.alert("BRAVO!!! TVOJ REZULTAT JE: " + result);
         gameIsOver = true;
-        sendResult(result);
+        await sendResult(result);
+        showScoreBoard();
     }
 }
 
@@ -185,8 +185,8 @@ function setUndo(matrix, confirmedRows) {
     undoButton.innerHTML = "UNDO";
     undoButton.setAttribute("id", "undoBtn");
     undoButton.addEventListener("click", function () {
+        getResults();
         var empty = findFirstFalse(matrix);
-        console.log(empty);
         if (empty[1] === 0 && empty[0] > 0 && confirmedRows[empty[0]-1])
             return;
         if (empty[0] === 0 && empty[1] === 0)
@@ -288,13 +288,13 @@ function play() {
 
 // -------------------------------- ZA DRUGI DEO -------------------------------------
 async function sendResult(result) {
+
     try { 
         const URL = 'http://localhost:3000/';
         const response = await fetch(URL, {
             method : 'POST',
             headers : {
-                'Content-Type': 'application/json',
-            
+                'Content-Type': 'application/json'
             },
             mode : 'cors',
             body : JSON.stringify({
@@ -302,8 +302,9 @@ async function sendResult(result) {
             })
         });
         
-        //const jsonResponse = await response.json();
-        console.log(response);
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+
         
     } catch (err) {
         console.error(err);
@@ -311,6 +312,27 @@ async function sendResult(result) {
 }
 
 
+async function getResults() {
+    try {
+        const URL = 'http://localhost:3000/';
+        const response = await fetch(URL, {
+            method : 'GET',
+            headers : {
+                'Content-Type': 'application/json'
+            }
+        });
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);        
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+//--------------ZA TRECI DEO -----------------
+function showScoreBoard() {
+    
+}
 
 
 drawTable();

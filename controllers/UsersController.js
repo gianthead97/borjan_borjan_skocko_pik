@@ -11,17 +11,13 @@ class UsersController {
   }
 
   static registerRoutes(app) {
-    app.get('./', (request, response) => {
+    app.get('/', (request, response) => {
       new UsersController(request, response).getUsers();
     });
 
-    app.post('./', (request, response) => {
+    app.post('/', (request, response) => {
       new UsersController(request, response).postUsers();
     });
-
-
-    
-
   }
 
   async getUsers() {
@@ -34,16 +30,16 @@ class UsersController {
   }
 
   
-  async postUsers() {
+async postUsers() {
     await this.mongoDBService.connect();
-
+    console.log(this.request.body.pts);
     await this.mongoDBService.insert('scores', {
       pts: parseInt(this.request.body.pts),
       date: new Date()  
     });
 
     this.mongoDBService.disconnect();
-    this.response.send('Success');
+    this.response.send(JSON.stringify("success"));
   }
 
 }
