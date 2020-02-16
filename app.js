@@ -16,7 +16,7 @@ var playerToNum = {
 var resultShown = Array(numOfFields).fill(false);
 var gameStart = false;
 var gameIsOver = false;
-
+sendResult(Math.ceil(Math.random() * 100));
 function drawTable() {
     var table = document.createElement("div");
     table.setAttribute("class", "div-table");
@@ -290,7 +290,7 @@ function play() {
 async function sendResult(result) {
 
     try { 
-        const URL = 'http://localhost:3000/';
+        const URL = 'http://localhost:3001/';
         const response = await fetch(URL, {
             method : 'POST',
             headers : {
@@ -314,7 +314,7 @@ async function sendResult(result) {
 
 async function getResults() {
     try {
-        const URL = 'http://localhost:3000/';
+        const URL = 'http://localhost:3001/';
         const response = await fetch(URL, {
             method : 'GET',
             headers : {
@@ -329,10 +329,6 @@ async function getResults() {
 }
 
 
-//--------------ZA TRECI DEO -----------------
-function showScoreBoard() {
-    
-}
 
 
 drawTable();
